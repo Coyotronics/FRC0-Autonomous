@@ -2,6 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+// to preface; I wrote most of this with a fever. It won't be the best code I've ever written.
+// I used a large amount of final and ternary operators. I come from a C/C++/Kotlin/Rust background; 
+// performance and/or runtime constants are common practice
+
+
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -11,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -52,7 +57,8 @@ public class Robot extends TimedRobot {
   https://www.chiefdelphi.com/t/not-compressing/401842/5, 
   https://docs.wpilib.org/en/stable/docs/software/hardware-apis/pneumatics/pneumatics.html#generating-and-storing-pressure 
   
-  The dude never turns off the compressor he just turns it on. compressor.start(); just doesn't exist.
+  The dude never turns off the compressor he just turns it on.
+  the function compressor.start(); just doesn't exist anymore it has been deprecated.
   
   */
   //private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -156,6 +162,18 @@ public class Robot extends TimedRobot {
 
     // I love Java -_-
     final double armPower = Math.abs(operatorJoystick.getRawAxis(1)) < 0.05 ? 0 : -operatorJoystick.getRawAxis(1)*0.5;
+
+    /*
+     * Unoptimized version of the atrocity I wrote above:
+     * 
+     * double armPower = -operatorJoystick.getRawAxis(1);
+     * 
+     * if (Math.abs(armPower) < 0.05) {
+     *    armPower = 0;
+     * } else {
+     *    armPower *= 0.5;
+     * }
+     */
 
     armMotor.set(ControlMode.PercentOutput, armPower);
 
